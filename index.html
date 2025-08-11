@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CSR Lookup • Grid + Nearest Hut</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Mapbox GL JS -->
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  <!-- Mapbox Geocoder (use jsDelivr CDN to avoid plugin blocking) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mapbox/mapbox-gl-geocoder@5.0.1/dist/mapbox-gl-geocoder.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@mapbox/mapbox-gl-geocoder@5.0.1/dist/mapbox-gl-geocoder.min.js"></script>
+  <!-- Turf.js for spatial ops -->
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="panel">
+      <h1>CSR Lookup</h1>
+      <div class="top-controls">
+        <div id="geocoder"></div>
+        <button id="btn-zoom-out" class="icon-btn square" title="Zoom out">−</button>
+        <button id="btn-zoom-in" class="icon-btn square" title="Zoom in">+</button>
+        <button id="btn-recenter" class="icon-btn" title="Recenter map">Recenter</button>
+      </div>
+      <p class="hint">Type an address. We’ll show its Grid (SML), Substation, Hut, and Feeder.</p>
+
+      <section class="card" id="result-card" hidden>
+        <div class="row">
+          <div class="label">Entered address</div>
+          <div class="value" id="addr-text">—</div>
+          <div class="small" id="addr-coords">—</div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="label">Substation</div>
+          <div class="value" id="substation-val">—</div>
+        </div>
+        <div class="row">
+          <div class="label">Hut</div>
+          <div class="value" id="hut-val">—</div>
+          <div class="small" id="hut-dist">—</div>
+        </div>
+        <div class="row">
+          <div class="label">Feeder</div>
+          <div class="value" id="feeder-val">—</div>
+          <div class="small" id="feeder-dist">—</div>
+        </div>
+        <div class="row">
+          <div class="label">Grid (SML)</div>
+          <div class="value" id="grid-sml">—</div>
+        </div>
+        <div class="row">
+          <div class="label">Grid OOT</div>
+          <div class="value" id="grid-oot">—</div>
+        </div>
+        <div id="neighbor-grids" class="small" hidden></div>
+        <div class="actions">
+          <button id="btn-refresh">Refresh</button>
+        </div>
+      </section>
+
+      <section class="card" id="legend-card">
+        <div class="label">Legend</div>
+        <div id="legend-body" class="legend-list small">Colors load on map start.</div>
+        <div class="small" style="margin-top:6px">Zones & feeder areas use the same substation colors.</div>
+      </section>
+    </aside>
+    <main id="map"></main>
+  </div>
+
+  <!-- App scripts with cache-busting -->
+  <script src="js/config.js?v=21"></script>
+  <script src="js/spatial.js?v=21"></script>
+  <script src="js/app.js?v=21"></script>
+</body>
+</html>
