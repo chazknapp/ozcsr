@@ -12,7 +12,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@mapbox/mapbox-gl-geocoder@5.0.1/dist/mapbox-gl-geocoder.min.js"></script>
   <!-- Turf.js for spatial ops -->
   <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
-</head>
+  </head>
 <body>
 
   <!-- ===== Password Gate (inline) ===== -->
@@ -88,17 +88,19 @@
 
         <div id="neighbor-grids" class="block" hidden></div>
 
-        <button id="new-search" class="btn-secondary" style="margin-top:10px">Refresh</button>
+        <button id="btn-refresh" class="btn-secondary" style="margin-top:10px">Refresh</button>
       </div>
 
       <!-- Legend -->
       <div id="legend-card" class="card">
         <div class="label">Legend</div>
-        <div class="small">Colors load on map start.<br />Zones &amp; feeder areas use the same substation colors.</div>
         <div id="legend-body" class="legend-list" style="margin-top:10px"></div>
       </div>
+    </aside>
 
-      
+    <div id="map"></div>
+  </div>
+
   <!-- Mapbox + plugins (JS) -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
   <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.min.js"></script>
