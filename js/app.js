@@ -102,7 +102,7 @@ if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => zoomToPoint(-1));
 
 // 3) State
 let addrMarkers = []; // keep up to 2 markers for comparison
-let data = { gridInT: null, /* gridOOT: null, */ substations: null, feeders: null, huts: null };
+let data = { gridInT: null, gridOOT: null, substations: null, feeders: null, huts: null };
 
 // Distinct colors for Zones (Substations)
 const ZONE_PALETTE = [
