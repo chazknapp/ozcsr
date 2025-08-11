@@ -1,0 +1,10 @@
+{
+  "name": "csr-lookup",
+  "private": true,
+  "scripts": {
+    "build": "rm -rf dist && mkdir -p dist && cp -R css js data dist/ && npx pagecrypt index.html dist/index.html \"$PASSWORD\""
+  },
+  "devDependencies": {
+    "pagecrypt": "^1.3.0"
+  }
+}
