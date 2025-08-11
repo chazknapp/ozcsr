@@ -98,20 +98,7 @@
         <div id="legend-body" class="legend-list" style="margin-top:10px"></div>
       </div>
 
-      <!-- Notes (optional) -->
-      <div class="card small">
-        <ul>
-          <li>Start view/bounds are set in <code>js/config.js</code>.</li>
-          <li>Styling &amp; labels in <code>js/app.js</code>.</li>
-          <li>Spatial logic in <code>js/spatial.js</code>.</li>
-          <li>Expected data: <code>data/Grids.geojson</code>, <code>data/Zones.geojson</code>, <code>data/Feeders.geojson</code>, <code>data/Huts.geojson</code>.</li>
-        </ul>
-      </div>
-    </aside>
-
-    <div id="map"></div>
-  </div>
-
+      
   <!-- Mapbox + plugins (JS) -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
   <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.min.js"></script>
@@ -125,7 +112,7 @@
 
   <!-- Password gate logic -->
   <script>
-    // SHA-256 hash of "wethepeople"
+    // SHA-256 hash of "ozarksgo"
     const EXPECTED_HASH = "6b1e5b6f3615602c23e232464795be8fe9cc990995ded2e82b93773837441141";
 
     // Skip if already unlocked this tab
