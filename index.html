@@ -14,159 +14,64 @@
   <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 </head>
 <body>
-
-  <!-- ===== Password Gate (inline) ===== -->
-  <div id="gate" style="position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(17,24,39,.92);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
-    <div style="width:min(92vw,380px);background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:22px">
-      <h1 style="margin:0 0 12px;font-size:20px;letter-spacing:.2px;color:#111827">Enter Password</h1>
-      <p style="margin:0 0 16px;color:#374151;font-size:14px">This page is restricted.</p>
-      <form id="gate-form">
-        <input id="gate-input" type="password" placeholder="Password" autocomplete="current-password"
-               style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;font-size:15px;outline:none"/>
-        <div id="gate-error" style="height:18px;color:#b91c1c;font-size:12px;margin-top:8px;visibility:hidden">Invalid password</div>
-        <button type="submit"
-          style="margin-top:12px;width:100%;padding:10px 12px;border:0;border-radius:10px;background:#1f2937;color:#fff;font-weight:600;cursor:pointer">
-          Unlock
-        </button>
-      </form>
-      <div style="margin-top:10px;text-align:center">
-        <button id="gate-show" type="button" style="background:none;border:0;color:#2563eb;cursor:pointer;font-size:12px">
-          show / hide
-        </button>
-      </div>
-    </div>
-  </div>
-  <!-- ===== /Password Gate ===== -->
-
   <div class="app">
     <aside class="panel">
       <h1>CSR Lookup</h1>
-
-      <div id="controls" class="controls">
+      <div class="top-controls">
         <div id="geocoder"></div>
-        <div class="zoom-controls">
-          <button id="btn-zoom-in"  title="Zoom in">+</button>
-          <button id="btn-zoom-out" title="Zoom out">−</button>
-          <button id="btn-recenter" title="Recenter">Recenter</button>
+        <button id="btn-zoom-out" class="icon-btn square" title="Zoom out">−</button>
+        <button id="btn-zoom-in" class="icon-btn square" title="Zoom in">+</button>
+        <button id="btn-recenter" class="icon-btn" title="Recenter map">Recenter</button>
+      </div>
+      <p class="hint">Type an address. We’ll show its Grid (SML), Substation, Hut, and Feeder.</p>
+
+      <section class="card" id="result-card" hidden>
+        <div class="row">
+          <div class="label">Entered address</div>
+          <div class="value" id="addr-text">—</div>
+          <div class="small" id="addr-coords">—</div>
         </div>
-      </div>
+        <hr>
+        <div class="row">
+          <div class="label">Substation</div>
+          <div class="value" id="substation-val">—</div>
+        </div>
+        <div class="row">
+          <div class="label">Hut</div>
+          <div class="value" id="hut-val">—</div>
+          <div class="small" id="hut-dist">—</div>
+        </div>
+        <div class="row">
+          <div class="label">Feeder</div>
+          <div class="value" id="feeder-val">—</div>
+          <div class="small" id="feeder-dist">—</div>
+        </div>
+        <div class="row">
+          <div class="label">Grid (SML)</div>
+          <div class="value" id="grid-sml">—</div>
+        </div>
+        <div class="row">
+          <div class="label">Grid OOT</div>
+          <div class="value" id="grid-oot">—</div>
+        </div>
+        <div id="neighbor-grids" class="small" hidden></div>
+        <div class="actions">
+          <button id="btn-refresh">Refresh</button>
+        </div>
+      </section>
 
-      <!-- Results -->
-      <div id="result-card" class="card" hidden>
-        <div class="label">Entered address</div>
-        <div id="addr-text" class="value">—</div>
-        <div id="addr-coords" class="small">—</div>
-
-        <div class="row-spacer"></div>
-
-        <div class="label">Substation</div>
-        <div id="substation-val" class="value">—</div>
-
-        <div class="row-spacer"></div>
-
-        <div class="label">Hut</div>
-        <div id="hut-val" class="value">—</div>
-        <div id="hut-dist" class="small">—</div>
-
-        <div class="row-spacer"></div>
-
-        <div class="label">Feeder</div>
-        <div id="feeder-val" class="value">—</div>
-        <div id="feeder-dist" class="small">—</div>
-
-        <div class="row-spacer"></div>
-
-        <div class="label">Grid (SML)</div>
-        <div id="grid-sml" class="value">—</div>
-
-        <div class="row-spacer"></div>
-
-        <div class="label">Grid OOT</div>
-        <div id="grid-oot" class="value">—</div>
-
-        <div class="row-spacer"></div>
-
-        <div id="neighbor-grids" class="block" hidden></div>
-
-        <button id="btn-refresh" class="btn-secondary" style="margin-top:10px">Refresh</button>
-      </div>
-
-      <!-- Legend -->
-      <div id="legend-card" class="card">
+      <section class="card" id="legend-card">
         <div class="label">Legend</div>
-        <div id="legend-body" class="legend-list" style="margin-top:10px"></div>
-      </div>
+        <div id="legend-body" class="legend-list small">Colors load on map start.</div>
+        <div class="small" style="margin-top:6px">Zones & feeder areas use the same substation colors.</div>
+      </section>
     </aside>
-
-    <div id="map"></div>
+    <main id="map"></main>
   </div>
 
-  <!-- Mapbox + plugins (JS) -->
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
-  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.min.js"></script>
-  <!-- Turf.js -->
-  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
-
-  <!-- Your app files -->
-  <script src="js/config.js"></script>
-  <script src="js/spatial.js"></script>
-  <script src="js/app.js"></script>
-
-  <!-- Password gate logic -->
-  <script>
-    // SHA-256 hash of "wethepeople"
-    const EXPECTED_HASH = "6b1e5b6f3615602c23e232464795be8fe9cc990995ded2e82b93773837441141";
-
-    // Skip if already unlocked this tab
-    if (sessionStorage.getItem("csr_unlocked") === "1") {
-      const g = document.getElementById("gate");
-      if (g) g.remove();
-    }
-
-    async function sha256Hex(str){
-      const buf = new TextEncoder().encode(str);
-      const hash = await crypto.subtle.digest("SHA-256", buf);
-      return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
-    }
-
-    (function initGate(){
-      const gate = document.getElementById("gate");
-      if (!gate) return;
-
-      const form  = document.getElementById("gate-form");
-      const input = document.getElementById("gate-input");
-      const err   = document.getElementById("gate-error");
-      const toggle= document.getElementById("gate-show");
-
-      setTimeout(() => input && input.focus(), 0);
-
-      toggle?.addEventListener("click", () => {
-        input.type = input.type === "password" ? "text" : "password";
-        input.focus();
-      });
-
-      form?.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        err.style.visibility = "hidden";
-        const val = input.value || "";
-        if (!val) { err.textContent = "Enter a password"; err.style.visibility = "visible"; return; }
-
-        try {
-          const hex = await sha256Hex(val);
-          if (hex === EXPECTED_HASH) {
-            sessionStorage.setItem("csr_unlocked", "1");
-            gate.remove();
-          } else {
-            err.textContent = "Invalid password";
-            err.style.visibility = "visible";
-            input.select();
-          }
-        } catch {
-          err.textContent = "Your browser blocked crypto API.";
-          err.style.visibility = "visible";
-        }
-      });
-    })();
-  </script>
+  <!-- App scripts with cache-busting -->
+  <script src="js/config.js?v=21"></script>
+  <script src="js/spatial.js?v=21"></script>
+  <script src="js/app.js?v=21"></script>
 </body>
 </html>
