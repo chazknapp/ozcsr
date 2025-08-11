@@ -30,7 +30,7 @@ const INITIAL_BOUNDS = [
 // FIELD MAPPING — match exactly to your GeoJSON
 const FIELDS = {
   gridInT:     { sml: "Number_" },        // Grids: Number_ (Alias: Number)
-  // gridOOT:  { code: "Number_" },       // GridOOT: Number_ (Alias: Number) — enable when GridOOT is added
+  gridOOT:  { code: "Number_" },       // GridOOT: Number_ (Alias: Number) — enable when GridOOT is added
   huts:        { id: "stationID", substation: "Substation" }, // Huts: stationID (Alias: Station ID)
   substations: { name: "Substation", type: "polygon" },       // Zones: Substation (polygons)
   feeders:     { code: "Feeder_Code", substation: "Substation", type: "polygon" } // set to "polygon" since your feeders behave as areas; switch back to "line" if needed later // Feeders: Feeder_Code (lines)
@@ -39,7 +39,7 @@ const FIELDS = {
 // DATA SOURCES — your file names/paths
 const SOURCES = {
   gridInT:     { type: "geojson", url: "data/Grids.geojson" },
-  // gridOOT:  { type: "geojson", url: "data/GridOOT.geojson" }, // uncomment when available
+  gridOOT:  { type: "geojson", url: "data/GridOOT.geojson" }, // uncomment when available
   substations: { type: "geojson", url: "data/Zones.geojson" },
   feeders:     { type: "geojson", url: "data/Feeders.geojson" },
   huts:        { type: "geojson", url: "data/Huts.geojson" }
